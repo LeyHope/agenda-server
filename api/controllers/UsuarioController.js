@@ -12,7 +12,7 @@ function criaTokenJWT(id) {
     const payload = {
         id: id
     }
-    const token = jwt.sign(payload, process.env.CHAVE_JWT)
+    const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: '15m' })
     return token
 }
 
