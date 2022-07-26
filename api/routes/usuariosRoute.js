@@ -13,10 +13,6 @@ function checkToken(req, res, next) {
         return res.status(401).json({ msg: 'Acesso negado' })
     }
 
-    // if (erro && erro.message === 'TokenExpiredError') {
-    //     return res.status(401).json({erro: erro.message, expiradoEm: erro.expiredAt})
-    // }
-
     try {
 
         const secret = process.env.CHAVE_JWT
