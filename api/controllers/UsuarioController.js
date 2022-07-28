@@ -8,6 +8,18 @@ const passport = require('passport')
 
 
 
+    class Usuario {
+        constructor(usuario) {
+            this.id = usuario.id;
+            this.nome = usuario.nome;
+            this.email = usuario.email;
+            this.senhaHash = usuario.senhaHash;
+        }
+    }
+
+
+
+
 function criaTokenJWT(id) {
     const payload = {
         id: id
@@ -61,10 +73,12 @@ class UsuarioController {
     }
 
     try {
-        const novoUsuarioCriado = await database.Usuarios.create(novoUsuario)
-        return res.status(200).json(novoUsuarioCriado)
+        const usuarioCriado = await database.Usuarios.create(novoUsuario)
+        
+        return res.status(200).json(usuarioCriado)
         } catch (error) {
             return res.status(500).json({msg: 'Erro ao cadastrar'})
+
         }
     }
 
@@ -99,6 +113,7 @@ class UsuarioController {
                     email: email
                 }
             })
+            console.log(usuario)
             return res.status(200).json(usuario)
         } catch (error) {
             res.status(500).json(error.message)
@@ -148,7 +163,7 @@ class UsuarioController {
 
     static async login (req, res) {
 
-        const {id, email, senhaHash} = req.body
+        const {email, senhaHash} = req.body
 
         if(!email) {
             return res.status(422).json({msg: 'O email é obrigatório'})
@@ -174,12 +189,21 @@ class UsuarioController {
             return res.status(422).json({msg: 'Senha inválida!'})
         }
 
+        const id = user.id
+        
+        console.log(id)
 
         const token = criaTokenJWT(id)
 
         res.set('Authoziration', token)
         res.status(204).send()
 
+
+    }
+
+    static async test(req, res) {
+        // const reqQuery = req.query
+        console.log(req)
 
     }
 

@@ -43,6 +43,8 @@ router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
 router.delete('/usuario/:id', checkToken ,UsuarioController.deleteUsuario)
 
+router.get('/test', UsuarioController.test)
+
 
 
 module.exports = router
