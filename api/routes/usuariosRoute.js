@@ -4,28 +4,28 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken');
 
 
-function checkToken(req, res, next) {
+// function checkToken(req, res, next) {
 
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(" ")[1]
+//     const authHeader = req.headers['authorization']
+//     const token = authHeader && authHeader.split(" ")[1]
 
-    if(!token) {
-        return res.status(401).json({ msg: 'Acesso negado' })
-    }
+//     if(!token) {
+//         return res.status(401).json({ msg: 'Acesso negado' })
+//     }
 
-    try {
+//     try {
 
-        const secret = process.env.CHAVE_JWT
+//         const secret = process.env.CHAVE_JWT
 
-        jwt.verify(token, secret)
+//         jwt.verify(token, secret)
 
-        next()
+//         next()
 
-    } catch (error) {
-        res.status(400).json(error)
-    }
+//     } catch (error) {
+//         res.status(400).json(error)
+//     }
 
-}
+// }
 
 
 
@@ -43,7 +43,7 @@ router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
 // router.delete('/usuario/:id', UsuarioController.deleteUsuario)
 
-router.delete('/usuario/:id', checkToken ,UsuarioController.deleteUsuario)
+router.delete('/usuario/:id', passport.authenticate('bearer', {session:false}), UsuarioController.deleteUsuario)
 
 router.get('/test', UsuarioController.test)
 
