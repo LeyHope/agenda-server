@@ -20,9 +20,9 @@ const passport = require('passport')
 
 
 
-function criaTokenJWT(id) {
+function criaTokenJWT(usuario) {
     const payload = {
-        id: id
+        id: usuario.id
     }
     const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: '15m' })
     return token
@@ -209,6 +209,17 @@ class UsuarioController {
         // res.set('Authoziration', token)
         // res.status(204).send()
 
+
+
+
+
+        console.log(req.user.id)
+
+        const token = criaTokenJWT(req.user)
+
+        console.log(token)
+
+        res.set('Authoziration', token)
         res.status(204).send()
 
 
