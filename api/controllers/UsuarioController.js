@@ -128,12 +128,23 @@ class UsuarioController {
         const { id } = req.body
 
         try {
-            const usuario = await database.Usuarios.findOne({
+            const usuarioConsultado = await database.Usuarios.findOne({
                 where: {
                     id:id
                 }
             })
-            return res.status(200).json(usuario)
+
+            const usuarioNovo = {
+                id: usuarioConsultado.id,
+                nome: usuarioConsultado.nome,
+                email: usuarioConsultado.email
+                
+            }
+
+            console.log(usuarioNovo)
+
+
+            return res.status(200).json(usuarioConsultado)
         } catch {
             res.status(500).json({msg: 'Id não encontrado'})
         }
@@ -163,39 +174,41 @@ class UsuarioController {
 
     static async login (req, res) {
 
-        const {email, senhaHash} = req.body
+        // const {email, senhaHash} = req.body
 
-        if(!email) {
-            return res.status(422).json({msg: 'O email é obrigatório'})
-        }
+        // if(!email) {
+        //     return res.status(422).json({msg: 'O email é obrigatório'})
+        // }
     
-        if(!senhaHash) {
-            return res.status(422).json({msg: 'A senha é obrigatório'})
-        }
+        // if(!senhaHash) {
+        //     return res.status(422).json({msg: 'A senha é obrigatório'})
+        // }
 
-        const user = await database.Usuarios.findOne({
-            where: {
-                email: email
-            }
-        })
+        // const user = await database.Usuarios.findOne({
+        //     where: {
+        //         email: email
+        //     }
+        // })
     
-        if(!user) {
-            return res.status(404).json({msg: 'Usuário não encontrado!'})
-        }
+        // if(!user) {
+        //     return res.status(404).json({msg: 'Usuário não encontrado!'})
+        // }
 
-        const checaSenha = await bcrypt.compare(senhaHash, user.senhaHash)
+        // const checaSenha = await bcrypt.compare(senhaHash, user.senhaHash)
 
-        if(!checaSenha) {
-            return res.status(422).json({msg: 'Senha inválida!'})
-        }
+        // if(!checaSenha) {
+        //     return res.status(422).json({msg: 'Senha inválida!'})
+        // }
 
-        const id = user.id
+        // const id = user.id
         
-        console.log(id)
+        // console.log(id)
 
-        const token = criaTokenJWT(id)
+        // const token = criaTokenJWT(id)
 
-        res.set('Authoziration', token)
+        // res.set('Authoziration', token)
+        // res.status(204).send()
+
         res.status(204).send()
 
 

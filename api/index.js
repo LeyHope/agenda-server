@@ -13,6 +13,8 @@ const fs = require('fs')
 var path = require('path')
 const routes = require('./routes/index')
 
+const { estrategiasAutenticacao } = require('./Estrategias/index')
+
 
 
 

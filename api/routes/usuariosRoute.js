@@ -34,7 +34,9 @@ const router = Router()
 
 
 router.post('/usuario', UsuarioController.criaUsuario)
-router.post('/usuario/login', UsuarioController.login)
+
+router.post('/usuario/login', passport.authenticate('local', {session:false}), UsuarioController.login)
+
 router.get('/usuario', UsuarioController.listaUsuarios)
 router.get('/usuariobusca', UsuarioController.buscaUsuarioPorEmail)
 router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
