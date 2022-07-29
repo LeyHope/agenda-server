@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 
 const passport = require('passport')
 
+const blacklist = require('../../redis/manipula-blocklist')
+
 
 
     class Usuario {
@@ -174,45 +176,6 @@ class UsuarioController {
 
     static async login (req, res) {
 
-        // const {email, senhaHash} = req.body
-
-        // if(!email) {
-        //     return res.status(422).json({msg: 'O email é obrigatório'})
-        // }
-    
-        // if(!senhaHash) {
-        //     return res.status(422).json({msg: 'A senha é obrigatório'})
-        // }
-
-        // const user = await database.Usuarios.findOne({
-        //     where: {
-        //         email: email
-        //     }
-        // })
-    
-        // if(!user) {
-        //     return res.status(404).json({msg: 'Usuário não encontrado!'})
-        // }
-
-        // const checaSenha = await bcrypt.compare(senhaHash, user.senhaHash)
-
-        // if(!checaSenha) {
-        //     return res.status(422).json({msg: 'Senha inválida!'})
-        // }
-
-        // const id = user.id
-        
-        // console.log(id)
-
-        // const token = criaTokenJWT(id)
-
-        // res.set('Authoziration', token)
-        // res.status(204).send()
-
-
-
-
-
         console.log(req.user.id)
 
         const token = criaTokenJWT(req.user)
@@ -225,9 +188,20 @@ class UsuarioController {
 
     }
 
-    static async test(req, res) {
-        // const reqQuery = req.query
-        console.log(req)
+    static async logout (req, res) {
+
+        try {
+            const token = req.token
+            console.log(token + 'token aqqqqqq')
+    
+            await blacklist.adiciona(token)
+            res.status(204).send()
+
+
+        } catch (erro) {
+            res.status(500).json({erro:erro.message})
+
+        }
 
     }
 

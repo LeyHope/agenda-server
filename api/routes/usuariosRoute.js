@@ -43,11 +43,9 @@ router.get('/usuario', UsuarioController.listaUsuarios)
 router.get('/usuariobusca', UsuarioController.buscaUsuarioPorEmail)
 router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
-// router.delete('/usuario/:id', UsuarioController.deleteUsuario)
-
 router.delete('/usuario/:id', midlewaresAutenticacao.bearer, UsuarioController.deleteUsuario)
 
-router.get('/test', UsuarioController.test)
+router.get('/usuario/logout', midlewaresAutenticacao.bearer, UsuarioController.logout)
 
 
 

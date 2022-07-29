@@ -40,6 +40,8 @@ module.exports = {
                 }
 
 
+                req.token = info.token
+                console.log(req.token)
                 req.user = usuario
                 return next()
             }

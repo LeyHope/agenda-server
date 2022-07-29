@@ -15,7 +15,7 @@ const routes = require('./routes/index')
 
 const { estrategiasAutenticacao } = require('./Estrategias/index')
 
-
+require('../redis/blocklist')
 
 
 app.use(cors())

@@ -69,7 +69,7 @@ passport.use(
                     senhaHash: usuarioConsultado.senhaHash
                 }
     
-                done(null, usuario)
+                done(null, usuario, {token})
                 
             } catch (erro) {
                 done(erro)
