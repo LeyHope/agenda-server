@@ -15,7 +15,8 @@ const routes = require('./routes/index')
 
 const { estrategiasAutenticacao } = require('./Estrategias/index')
 
-require('../redis/blocklist')
+require('../redis/blocklist-access-token')
+require('../redis/allowlist-refresh-token')
 
 
 app.use(cors())

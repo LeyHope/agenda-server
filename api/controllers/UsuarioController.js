@@ -6,9 +6,11 @@ const jwt = require('jsonwebtoken')
 
 const passport = require('passport')
 
-const blacklist = require('../../redis/manipula-blocklist')
+const blocklist = require('../../redis/blocklist-access-token')
 const crypto = require('crypto')
 const moment = require('moment')
+
+const allowlistRefreshToken = require('../../redis/allowlist-refresh-token')
 
 
 
@@ -33,9 +35,10 @@ function criaTokenJWT(usuario) {
 }
 
 
-function criaTokenOpaco(usuario) {
+async function criaTokenOpaco(usuario) {
     const tokenOpaco = crypto.randomBytes(24).toString('hex')
     const dataExpiracao = moment().add(5, 'd').unix()
+    await allowlistRefreshToken.adiciona(tokenOpaco, usuario.id, dataExpiracao)
     return tokenOpaco;
 }
 
@@ -151,9 +154,6 @@ class UsuarioController {
                 
             }
 
-            console.log(usuarioNovo)
-
-
             return res.status(200).json(usuarioConsultado)
         } catch {
             res.status(500).json({msg: 'Id não encontrado'})
@@ -186,7 +186,7 @@ class UsuarioController {
 
         try {
             const accesstoken = criaTokenJWT(req.user)
-            const refreshToken = criaTokenOpaco(req.user)
+            const refreshToken = await criaTokenOpaco(req.user)
     
             res.set('Authoziration', accesstoken)
             res.status(200).send({refreshToken})
@@ -202,9 +202,8 @@ class UsuarioController {
 
         try {
             const token = req.token
-            console.log(token + 'token aqqqqqq')
-    
-            await blacklist.adiciona(token)
+
+            await blocklist.adiciona(token)
             res.status(204).send()
 
 

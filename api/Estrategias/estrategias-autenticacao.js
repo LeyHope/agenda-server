@@ -4,13 +4,13 @@ const BearerStrategy = require('passport-http-bearer').Strategy
 const database = require('../models/index')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const blacklist = require('../../redis/manipula-blocklist')
+const blocklist = require('../../redis/blocklist-access-token')
 
 
 
-async function verificaTokenNaBlacklist(token) {
-    const tokenNaBlacklist = await blacklist.contemToken(token)
-    if (tokenNaBlacklist) {
+async function verificaTokenNaBlocklist(token) {
+    const tokenNaBlocklist = await blocklist.contemToken(token)
+    if (tokenNaBlocklist) {
         throw new jwt.JsonWebTokenError('Token inválido por logout')
     }
 
@@ -67,7 +67,7 @@ passport.use(
 
 
             try {
-                await verificaTokenNaBlacklist(token)
+                await verificaTokenNaBlocklist(token)
                 const payload = jwt.verify(token, process.env.CHAVE_JWT)
 
                 const usuarioConsultado = await database.Usuarios.findOne({
