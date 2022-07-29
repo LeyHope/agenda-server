@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 const blacklist = require('../../redis/manipula-blocklist')
+const crypto = require('crypto')
+const moment = require('moment')
 
 
 
@@ -30,6 +32,12 @@ function criaTokenJWT(usuario) {
     return token
 }
 
+
+function criaTokenOpaco(usuario) {
+    const tokenOpaco = crypto.randomBytes(24).toString('hex')
+    const dataExpiracao = moment().add(5, 'd').unix()
+    return tokenOpaco;
+}
 
 
 class UsuarioController {
@@ -176,15 +184,17 @@ class UsuarioController {
 
     static async login (req, res) {
 
-        console.log(req.user.id)
+        try {
+            const accesstoken = criaTokenJWT(req.user)
+            const refreshToken = criaTokenOpaco(req.user)
+    
+            res.set('Authoziration', accesstoken)
+            res.status(200).send({refreshToken})
 
-        const token = criaTokenJWT(req.user)
+        } catch (erro) {
+            res.status(500).json({erro:erro.menssage})
 
-        console.log(token)
-
-        res.set('Authoziration', token)
-        res.status(204).send()
-
+        }
 
     }
 
