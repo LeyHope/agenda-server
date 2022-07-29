@@ -3,6 +3,8 @@ const UsuarioController = require('../controllers/UsuarioController')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 
+const midlewaresAutenticacao = require('../Midlewares/midlewares-autenticacao');
+
 
 // function checkToken(req, res, next) {
 
@@ -35,7 +37,7 @@ const router = Router()
 
 router.post('/usuario', UsuarioController.criaUsuario)
 
-router.post('/usuario/login', passport.authenticate('local', {session:false}), UsuarioController.login)
+router.post('/usuario/login', midlewaresAutenticacao.local, UsuarioController.login)
 
 router.get('/usuario', UsuarioController.listaUsuarios)
 router.get('/usuariobusca', UsuarioController.buscaUsuarioPorEmail)
@@ -43,7 +45,7 @@ router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
 // router.delete('/usuario/:id', UsuarioController.deleteUsuario)
 
-router.delete('/usuario/:id', passport.authenticate('bearer', {session:false}), UsuarioController.deleteUsuario)
+router.delete('/usuario/:id', midlewaresAutenticacao.bearer, UsuarioController.deleteUsuario)
 
 router.get('/test', UsuarioController.test)
 
