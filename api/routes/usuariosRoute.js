@@ -45,7 +45,14 @@ router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
 router.delete('/usuario/:id', midlewaresAutenticacao.bearer, UsuarioController.deleteUsuario)
 
-router.get('/usuario/logout', midlewaresAutenticacao.bearer, UsuarioController.logout)
+router.get('/usuario/logout', 
+midlewaresAutenticacao.bearer, 
+UsuarioController.logout)
+
+router.post('/usuario/atualiza_token', 
+midlewaresAutenticacao.refresh,
+UsuarioController.login
+)
 
 
 

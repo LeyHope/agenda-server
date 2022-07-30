@@ -126,7 +126,8 @@ class UsuarioController {
                     email: email
                 }
             })
-            console.log(usuario)
+
+
             return res.status(200).json(usuario)
         } catch (error) {
             res.status(500).json(error.message)
@@ -146,6 +147,8 @@ class UsuarioController {
                     id:id
                 }
             })
+
+            console.log(usuarioConsultado.id)
 
             const usuarioNovo = {
                 id: usuarioConsultado.id,
