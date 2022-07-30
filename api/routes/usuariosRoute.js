@@ -43,16 +43,17 @@ router.get('/usuario', UsuarioController.listaUsuarios)
 router.get('/usuariobusca', UsuarioController.buscaUsuarioPorEmail)
 router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
-router.delete('/usuario/:id', midlewaresAutenticacao.bearer, UsuarioController.deleteUsuario)
-
-router.get('/usuario/logout', 
+router.delete('/usuario/:id', 
 midlewaresAutenticacao.bearer, 
+UsuarioController.deleteUsuario)
+
+router.post('/usuario/logout', 
+[midlewaresAutenticacao.bearer, midlewaresAutenticacao.refresh], 
 UsuarioController.logout)
 
 router.post('/usuario/atualiza_token', 
 midlewaresAutenticacao.refresh,
-UsuarioController.login
-)
+UsuarioController.login)
 
 
 
