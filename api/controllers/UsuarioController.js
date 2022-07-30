@@ -1,46 +1,13 @@
 const database = require('../models/index')
 const bcrypt = require('bcrypt')
 
-const jwt = require('jsonwebtoken')
-
-
 const passport = require('passport')
 
 const blocklist = require('../../redis/blocklist-access-token')
-const crypto = require('crypto')
-const moment = require('moment')
 
-const allowlistRefreshToken = require('../../redis/allowlist-refresh-token')
+const tokens = require('../Tokens/tokens')
 
 
-
-    class Usuario {
-        constructor(usuario) {
-            this.id = usuario.id;
-            this.nome = usuario.nome;
-            this.email = usuario.email;
-            this.senhaHash = usuario.senhaHash;
-        }
-    }
-
-
-
-
-function criaTokenJWT(usuario) {
-    const payload = {
-        id: usuario.id
-    }
-    const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: '15m' })
-    return token
-}
-
-
-async function criaTokenOpaco(usuario) {
-    const tokenOpaco = crypto.randomBytes(24).toString('hex')
-    const dataExpiracao = moment().add(5, 'd').unix()
-    await allowlistRefreshToken.adiciona(tokenOpaco, usuario.id, dataExpiracao)
-    return tokenOpaco;
-}
 
 
 class UsuarioController {
@@ -188,8 +155,8 @@ class UsuarioController {
     static async login (req, res) {
 
         try {
-            const accesstoken = criaTokenJWT(req.user)
-            const refreshToken = await criaTokenOpaco(req.user)
+            const accesstoken = tokens.access.cria(req.user.id)
+            const refreshToken = await tokens.refresh.cria(req.user.id)
     
             res.set('Authoziration', accesstoken)
             res.status(200).send({refreshToken})
