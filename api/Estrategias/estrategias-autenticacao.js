@@ -3,18 +3,9 @@ const LocalStrategy = require('passport-local').Strategy
 const BearerStrategy = require('passport-http-bearer').Strategy
 const database = require('../models/index')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const blocklist = require('../../redis/blocklist-access-token')
+const tokens = require('../Tokens/tokens')
 
 
-
-async function verificaTokenNaBlocklist(token) {
-    const tokenNaBlocklist = await blocklist.contemToken(token)
-    if (tokenNaBlocklist) {
-        throw new jwt.JsonWebTokenError('Token inválido por logout')
-    }
-
-}
 
 
 
@@ -65,14 +56,13 @@ passport.use(
     new BearerStrategy(
         async (token, done) => {
 
+            const id = await tokens.access.verifica(token)
+
 
             try {
-                await verificaTokenNaBlocklist(token)
-                const payload = jwt.verify(token, process.env.CHAVE_JWT)
-
                 const usuarioConsultado = await database.Usuarios.findOne({
                     where: {
-                        id:payload.id
+                        id:id
                     }
                 })
     

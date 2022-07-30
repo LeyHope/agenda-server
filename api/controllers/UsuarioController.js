@@ -3,8 +3,6 @@ const bcrypt = require('bcrypt')
 
 const passport = require('passport')
 
-const blocklist = require('../../redis/blocklist-access-token')
-
 const tokens = require('../Tokens/tokens')
 
 
@@ -173,7 +171,7 @@ class UsuarioController {
         try {
             const token = req.token
 
-            await blocklist.adiciona(token)
+            await tokens.access.invalida(token)
             res.status(204).send()
 
 
