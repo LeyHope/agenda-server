@@ -5,6 +5,8 @@ const passport = require('passport')
 
 const tokens = require('../Tokens/tokens')
 
+const { EmailVerificacao } = require('../Emails/emails')
+
 
 
 
@@ -52,8 +54,14 @@ class UsuarioController {
 
     try {
         const usuarioCriado = await database.Usuarios.create(novoUsuario)
+
+
+        const endereco = 'localhost:5000/usuario/verifica_email/' + usuarioCriado.id
+        const emailVerificacao = new EmailVerificacao(usuarioCriado, endereco)
+        emailVerificacao.enviaEmail().catch(console.log)
+
         
-        return res.status(200).json(usuarioCriado)
+        return res.status(201).json(usuarioCriado)
         } catch (error) {
             return res.status(500).json({msg: 'Erro ao cadastrar'})
 
