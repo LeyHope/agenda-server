@@ -1,13 +1,8 @@
 const database = require('../models/index')
 const bcrypt = require('bcrypt')
-
 const passport = require('passport')
-
 const tokens = require('../Tokens/tokens')
-
 const { EmailVerificacao } = require('../Emails/emails')
-
-
 
 
 class UsuarioController {
@@ -191,6 +186,24 @@ class UsuarioController {
         }
 
     }
+
+
+    static async verificaEmail(req, res) {
+        try {
+            const {id} = req.params
+            const usuarioConsultado = await database.Usuarios.findOne({
+                where: {
+                    id:id
+                }
+            })
+            usuarioConsultado.emailVerificado = true
+            await usuarioConsultado.save()
+            res.status(200).json()
+        } catch (erro) {
+            res.status(500).json({erro: erro.message})
+        }
+    }
+
 
 
 

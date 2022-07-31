@@ -10,12 +10,15 @@ const router = Router()
 
 
 router.post('/usuario', UsuarioController.criaUsuario)
-
 router.post('/usuario/login', midlewaresAutenticacao.local, UsuarioController.login)
-
 router.get('/usuario', UsuarioController.listaUsuarios)
 router.get('/usuariobusca', UsuarioController.buscaUsuarioPorEmail)
 router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
+
+router.get('/usuario/verifica_email/:id', UsuarioController.verificaEmail)
+
+
+
 
 router.delete('/usuario/:id', 
 midlewaresAutenticacao.bearer, 
