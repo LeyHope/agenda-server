@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    emailVerificado:
+    {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }, {
     sequelize,

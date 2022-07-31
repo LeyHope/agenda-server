@@ -49,11 +49,13 @@ class UsuarioController {
     const novoUsuario = {
         "nome": nome,
         "email": email,
-        "senhaHash": novaSenhaHash
+        "senhaHash": novaSenhaHash,
+        "emailVerificado": false
     }
 
     try {
         const usuarioCriado = await database.Usuarios.create(novoUsuario)
+
 
 
         const endereco = 'localhost:5000/usuario/verifica_email/' + usuarioCriado.id
