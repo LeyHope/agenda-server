@@ -190,14 +190,10 @@ class UsuarioController {
 
     static async verificaEmail(req, res) {
         try {
-            const {id} = req.params
-            const usuarioConsultado = await database.Usuarios.findOne({
-                where: {
-                    id:id
-                }
-            })
-            usuarioConsultado.emailVerificado = true
-            await usuarioConsultado.save()
+            const usuario = req.user
+            usuario.emailVerificado = true
+            await usuario.save()
+
             res.status(200).json()
         } catch (erro) {
             res.status(500).json({erro: erro.message})

@@ -78,7 +78,20 @@ module.exports = {
             return res.status(500).json({erro: erro.message})
 
         }
+    },
 
+    verificacaoEmail: async (req, res, next) => {
+        try {
+            const {id} = req.params
+            const usuarioConsultado = await database.Usuarios.findOne({
+                where: {
+                    id:id
+                }
+            })
+            req.user = usuarioConsultado
+            next()
+        } catch (erro) {
+            res.status(500).json({erro: erro.message})
+        }
     }
-
 }
