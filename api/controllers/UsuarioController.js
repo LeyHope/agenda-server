@@ -140,6 +140,9 @@ class UsuarioController {
     static async deleteUsuario (req, res) {
         const { id } = req.params
 
+        console.log(id)
+        console.log(typeof(id))
+
         try {
             await database.Usuarios.destroy({
                 where: {

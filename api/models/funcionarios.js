@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    contrato: 
+    {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     cpf: 
     {
       type: DataTypes.STRING,

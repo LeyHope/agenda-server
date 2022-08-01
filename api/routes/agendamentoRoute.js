@@ -6,5 +6,8 @@ const router = Router()
 router.post('/agendamento', AgendamentoController.criaAgendamento)
 
 
+router.delete('/agendamento', AgendamentoController.excluiAgendamento)
+
+
 
 module.exports = router
