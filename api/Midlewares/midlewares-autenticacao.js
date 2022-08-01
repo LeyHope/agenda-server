@@ -82,7 +82,8 @@ module.exports = {
 
     verificacaoEmail: async (req, res, next) => {
         try {
-            const {id} = req.params
+            const {token} = req.params
+            const id = await tokens.verificacaoEmail.verifica(token)
             const usuarioConsultado = await database.Usuarios.findOne({
                 where: {
                     id:id
@@ -91,7 +92,17 @@ module.exports = {
             req.user = usuarioConsultado
             next()
         } catch (erro) {
-            res.status(500).json({erro: erro.message})
+            if (erro.name === 'JsonWebTokenError') {
+                return res.status(401).json({erro: erro.message})
+            }
+            
+            if (erro.name === 'TokenExpiredError') {
+                return res.status(401).json({
+                    erro: erro.message, expiradoEm: erro.expiredAt
+                })
+            }
+
+            return res.status(500).json({erro: erro.message})
         }
     }
 }

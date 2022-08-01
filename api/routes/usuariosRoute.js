@@ -15,7 +15,9 @@ router.get('/usuario', UsuarioController.listaUsuarios)
 router.get('/usuariobusca', UsuarioController.buscaUsuarioPorEmail)
 router.get('/usuariobuscaid', UsuarioController.buscaUsuarioPorId)
 
-router.get('/usuario/verifica_email/:id', midlewaresAutenticacao.verificacaoEmail, UsuarioController.verificaEmail)
+router.get('/usuario/verifica_email/:token', 
+midlewaresAutenticacao.verificacaoEmail, 
+UsuarioController.verificaEmail)
 
 
 

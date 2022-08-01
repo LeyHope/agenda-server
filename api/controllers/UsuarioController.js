@@ -50,10 +50,8 @@ class UsuarioController {
 
     try {
         const usuarioCriado = await database.Usuarios.create(novoUsuario)
-
-
-
-        const endereco = 'localhost:5000/usuario/verifica_email/' + usuarioCriado.id
+        const token = tokens.verificacaoEmail.cria(usuarioCriado.id)
+        const endereco = "localhost:5000/usuario/verifica_email/"+token
         const emailVerificacao = new EmailVerificacao(usuarioCriado, endereco)
         emailVerificacao.enviaEmail().catch(console.log)
 
