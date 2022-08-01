@@ -8,7 +8,7 @@ const { EmailVerificacao } = require('../Emails/emails')
 class UsuarioController {
     static async criaUsuario(req, res) {
 
-    const {nome, email, senhaHash} = req.body
+    const {nome, email, senhaHash, confirmaSenha} = req.body
 
     if(!nome) {
         return res.status(422).json({msg: 'O nome é obrigatório'})
@@ -22,10 +22,13 @@ class UsuarioController {
         return res.status(422).json({msg: 'A senha é obrigatório'})
     }
 
-    // adicionar senha de confirmaçao
-    // if(senhaHash !== confirmeSenha) {
-    //     return res.status(422).json({msg: 'As senhas não conferem'})
-    // }
+    if(!confirmaSenha) {
+        return res.status(422).json({msg: 'A confimação de senha é obrigatório'})
+    }
+
+    if(senhaHash !== confirmaSenha) {
+        return res.status(422).json({msg: 'As senhas não conferem'})
+    }
 
     const emailAConsultar = await database.Usuarios.findOne({
         where: {
